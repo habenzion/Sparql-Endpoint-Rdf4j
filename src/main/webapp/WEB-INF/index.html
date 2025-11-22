@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SPARQL Endpoint Client</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        textarea { width: 100%; height: 100px; }
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>SPARQL Endpoint Client</h1>
+
+    <label>Repository URL:</label>
+    <input type="text" id="repoUrl" value="http://localhost:8080/rdf4j-server"><br><br>
+
+    <label>Repository ID:</label>
+    <input type="text" id="repoId" value="ties4520"><br><br>
+
+    <label>SPARQL Query:</label>
+    <textarea id="sparqlQuery"></textarea><br><br>
+
+    <button onclick="runQuery()">Run Query</button><br><br>
+
+    <div id="results"></div>
+
+    <script>
+        async function runQuery() {
+            const response = await fetch('SPARQLEndpointServlet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `repoUrl=${encodeURIComponent(document.getElementById('repoUrl').value)}&repoId=${encodeURIComponent(document.getElementById('repoId').value)}&query=${encodeURIComponent(document.getElementById('sparqlQuery').value)}`
+            });
+            const data = await response.text();
+            document.getElementById('results').innerHTML = data;
+        }
+    </script>
+</body>
+</html>
